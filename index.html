@@ -322,8 +322,6 @@
     body.dark .chat-bubble.assistant { background: #293d5c; color: #d3e2ff; }
     body.dark .chat-details { color: var(--ink); }
     .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 2px; }
-    .admin-duration { display: flex; min-height: 46px; align-items: center; justify-content: center; gap: 10px; margin-bottom: 12px; color: var(--navy); font-size: 11px; font-weight: 750; }
-    .admin-duration select { padding: 5px 8px; border: 1px solid var(--line); border-radius: 6px; background: var(--surface); color: var(--ink); }
     .admin-hint { color: var(--muted); font-size: 10px; font-weight: 400; }
     .admin-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 14px; }
     .admin-workspace { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: start; gap: 15px; }
@@ -343,7 +341,6 @@
     .admin-form input[type="file"] { padding: 6px; }
     .admin-form textarea { min-height: 68px; resize: vertical; }
     .admin-form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-bottom: 8px; }
-    #itemDetailsFields > .admin-hint { margin: -4px 0 0; }
     .admin-items-panel { min-width: 0; }
     .admin-item-list, .admin-message-list { display: grid; gap: 9px; max-height: 690px; overflow-y: auto; }
     .admin-item-card, .admin-message-card { padding: 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
@@ -395,7 +392,7 @@
     body.dark .topbar, body.dark .search, body.dark .icon-button, body.dark .filter,
     body.dark .secondary-button, body.dark .alert-form input, body.dark .alert-form select,
     body.dark .alert-form textarea, body.dark .message-form input, body.dark .message-form select,
-    body.dark .message-form textarea, body.dark .admin-duration select, body.dark .modal { background-color: var(--surface); color: var(--ink); }
+    body.dark .message-form textarea, body.dark .modal { background-color: var(--surface); color: var(--ink); }
     body.dark .page-title, body.dark .item-name, body.dark .panel h2, body.dark .stat-number,
     body.dark .modal-header h2, body.dark .message-item strong { color: #b7ceff; }
     body.dark .item-art { border-color: var(--line); background: #29364a; }
@@ -442,7 +439,6 @@
       .right-column { grid-template-columns: minmax(0, 1fr); }
       .admin-stats { gap: 6px; }
       .admin-form-row { grid-template-columns: minmax(0, 1fr); gap: 7px; }
-      .admin-duration { flex-wrap: wrap; }
       .admin-hint { flex-basis: 100%; text-align: center; }
       .nav-link { flex: 0 0 auto; }
       .nav { overflow-x: auto; }
@@ -513,9 +509,9 @@
               <div class="notification-card" role="status">
                 <div class="notification-icon" aria-hidden="true">🔔</div>
                 <div>
-                  <p class="notification-title">Items updated</p>
-                  <p class="notification-copy">This notification will appear when a found item may match your missing-item report.</p>
-                  <p class="notification-meta">Sample alert · Live notifications are not connected</p>
+                  <p class="notification-title" id="newPostTitle">No new posts yet</p>
+                  <p class="notification-copy" id="newPostCopy">A notification will appear here when the admin posts an item.</p>
+                  <p class="notification-meta" id="newPostMeta">Prototype notification · This browser only</p>
                 </div>
               </div>
             </section>
@@ -560,17 +556,6 @@
       </div>
 
       <div class="content hidden" id="adminPage">
-        <div class="admin-duration panel">
-          <span aria-hidden="true">◷</span>
-          <label for="postingDuration">Posting duration</label>
-          <select id="postingDuration">
-            <option value="7">7 days</option>
-            <option value="14">14 days</option>
-            <option value="30" selected>30 days</option>
-          </select>
-          <span class="admin-hint">Found items are shown to students for this long.</span>
-        </div>
-
         <section class="admin-stats" aria-label="Admin statistics">
           <div class="stat"><div class="stat-icon">◇</div><div><strong class="stat-number" id="adminPostedCount">0</strong><span class="stat-label">Total items posted</span></div></div>
           <div class="stat"><div class="stat-icon">▤</div><div><strong class="stat-number" id="adminUnclaimedCount">0</strong><span class="stat-label">Still unclaimed</span></div></div>
@@ -580,46 +565,36 @@
         <div class="admin-workspace" id="adminWorkspace">
           <section class="panel">
             <h2>＋ Post New Item</h2>
-            <p class="panel-copy">Every post receives its own serial number automatically.</p>
+            <p class="panel-copy">Items posted here are automatically marked as missing and receive a serial number.</p>
             <form class="admin-form" id="adminItemForm">
+              <label>Where found / last seen *
+                <select name="location" required>
+                  <option value="">Select location</option>
+                  <option>SA Building</option>
+                  <option>MR Building</option>
+                  <option>Library</option>
+                  <option>Cafeteria</option>
+                  <option>Main entrance</option>
+                  <option>Other campus location</option>
+                </select>
+              </label>
               <div class="admin-form-row">
-                <label>Type *
-                  <select name="type" required>
-                    <option value="found">Found</option>
-                    <option value="missing">Missing</option>
-                  </select>
+                <label>Surrendered by *
+                  <input name="foundBy" required maxlength="70">
                 </label>
-                <label>Where found / last seen *
-                  <select name="location" required>
-                    <option value="">Select location</option>
-                    <option>SA Building</option>
-                    <option>MR Building</option>
-                    <option>Library</option>
-                    <option>Cafeteria</option>
-                    <option>Main entrance</option>
-                    <option>Other campus location</option>
-                  </select>
+                <label>Surrendered to *
+                  <input name="surrenderedTo" required maxlength="70">
                 </label>
               </div>
-              <div id="itemDetailsFields">
-                <div class="admin-form-row">
-                  <label>Surrendered by *
-                    <input name="foundBy" required maxlength="70">
-                  </label>
-                  <label>Surrendered to *
-                    <input name="surrenderedTo" required maxlength="70">
-                  </label>
-                </div>
-                <div class="admin-form-row">
-                  <label>Time surrendered *
-                    <input name="receivedAt" type="datetime-local" required>
-                  </label>
-                  <label>Surrenderer contact *
-                    <input name="contact" type="tel" required maxlength="40">
-                  </label>
-                </div>
-                <p class="admin-hint">Surrenderer contact is visible to admins only.</p>
+              <div class="admin-form-row">
+                <label>Time surrendered *
+                  <input name="receivedAt" type="datetime-local" required>
+                </label>
+                <label>Surrenderer contact *
+                  <input name="contact" type="tel" required maxlength="40">
+                </label>
               </div>
+              <p class="admin-hint">Surrenderer contact is visible to admins only.</p>
               <label>Item title *
                 <input name="title" required maxlength="80">
               </label>
@@ -701,13 +676,12 @@
 
   <script>
     const items = [
-      { id: "LF-2026-0007", name: "Blush lipstick", description: "Lightweight, rose-colored lipstick", location: "SA Building", date: "Nov 14, 2026 · 09:31 AM", status: "found", icon: "💄", art: "", foundBy: "Zofia", surrenderedTo: "Sir Ezek", claimDays: 19 },
       { id: "LF-2026-0006", name: "Red water bottle", description: "Insulated bottle with a small star sticker", location: "MR Building", date: "Nov 13, 2026 · 02:15 PM", status: "missing", icon: "🧴", art: "art-bottle" },
-      { id: "LF-2026-0005", name: "Canvas shoulder bag", description: "Beige tote with a blue notebook inside", location: "Library", date: "Nov 13, 2026 · 11:08 AM", status: "found", icon: "👜", art: "art-bag", foundBy: "Campus staff", surrenderedTo: "Library desk", claimDays: 14 },
-      { id: "LF-2026-0004", name: "Set of keys", description: "Three silver keys with a round blue keychain", location: "Cafeteria", date: "Nov 12, 2026 · 01:42 PM", status: "found", icon: "🔑", art: "art-keys", foundBy: "A student", surrenderedTo: "Student affairs", claimDays: 21 },
+      { id: "LF-2026-0005", name: "Canvas shoulder bag", description: "Beige tote with a blue notebook inside", location: "Library", date: "Nov 13, 2026 · 11:08 AM", status: "missing", icon: "👜", art: "art-bag", foundBy: "Campus staff", surrenderedTo: "Library desk", claimed: true },
+      { id: "LF-2026-0004", name: "Set of keys", description: "Three silver keys with a round blue keychain", location: "Cafeteria", date: "Nov 12, 2026 · 01:42 PM", status: "missing", icon: "🔑", art: "art-keys", foundBy: "A student", surrenderedTo: "Student affairs" },
       { id: "LF-2026-0003", name: "Blue notebook", description: "A5 ruled notebook, initials written inside cover", location: "SA Building", date: "Nov 11, 2026 · 10:20 AM", status: "missing", icon: "📘", art: "art-book" },
-      { id: "LF-2026-0002", name: "Wireless earbuds", description: "White earbuds in a charging case", location: "MR Building", date: "Nov 10, 2026 · 04:06 PM", status: "found", icon: "🎧", art: "", foundBy: "Security desk", surrenderedTo: "Guard station", claimDays: 10 },
-      { id: "LF-2026-0001", name: "Student ID card", description: "Found near the main entrance", location: "Main entrance", date: "Nov 09, 2026 · 08:55 AM", status: "found", icon: "🪪", art: "", foundBy: "Campus staff", surrenderedTo: "Student affairs", claimDays: 7 }
+      { id: "LF-2026-0002", name: "Wireless earbuds", description: "White earbuds in a charging case", location: "MR Building", date: "Nov 10, 2026 · 04:06 PM", status: "missing", icon: "🎧", art: "", foundBy: "Security desk", surrenderedTo: "Guard station" },
+      { id: "LF-2026-0001", name: "Student ID card", description: "Found near the main entrance", location: "Main entrance", date: "Nov 09, 2026 · 08:55 AM", status: "missing", icon: "🪪", art: "", foundBy: "Campus staff", surrenderedTo: "Student affairs" }
     ];
 
     const itemList = document.getElementById("itemList");
@@ -733,7 +707,7 @@
       updatePublicCounts();
       const query = searchInput.value.trim().toLocaleLowerCase();
       const filtered = items.filter(function (item) {
-        return !item.archived && !item.claimed;
+        return !item.archived;
       }).filter(function (item) {
         const matchesStatus = activeFilter === "all" || item.status === activeFilter;
         const haystack = [item.id, item.name, item.description, item.location, item.foundBy, item.surrenderedTo].join(" ").toLocaleLowerCase();
@@ -747,31 +721,39 @@
       }
 
       itemList.innerHTML = filtered.map(function (item) {
+        const status = item.claimed ? "claimed" : item.status;
         const itemDetails = item.foundBy || item.surrenderedTo
           ? '<p class="item-detail">Surrendered by: <strong>' + escapeHtml(item.foundBy || "—") + '</strong></p><p class="item-detail">Surrendered to: <strong>' + escapeHtml(item.surrenderedTo || "—") + '</strong></p>'
           : "";
-        const action = item.status === "found"
+        const action = item.claimed
+          ? ""
+          : item.status === "found"
           ? '<p class="claim-time">◷ &nbsp;Claim within ' + item.claimDays + ' days</p><button class="primary-button claim-button" type="button" data-item-id="' + escapeHtml(item.id) + '">▱ &nbsp;Is this yours? Message Admin</button>'
           : '<button class="secondary-button ask-button" type="button" data-item-id="' + escapeHtml(item.id) + '">Ask admin about this item</button>';
         return '<article class="item-card">' +
           '<div class="item-art ' + escapeHtml(item.art) + '" aria-hidden="true">' + item.icon + '</div>' +
-          '<div class="item-info"><div class="item-topline"><div class="item-meta"><span class="item-id">' + escapeHtml(item.id) + '</span><span>⌖ &nbsp;' + escapeHtml(item.status === "found" ? "Found at: " : "Location: ") + escapeHtml(item.location) + '</span></div><span class="status status-' + item.status + '">' + item.status.toUpperCase() + '</span></div>' +
+          '<div class="item-info"><div class="item-topline"><div class="item-meta"><span class="item-id">' + escapeHtml(item.id) + '</span><span>⌖ &nbsp;' + escapeHtml(item.status === "found" ? "Found at: " : "Location: ") + escapeHtml(item.location) + '</span></div><span class="status status-' + status + '">' + status.toUpperCase() + '</span></div>' +
           '<h3 class="item-name">' + escapeHtml(item.name) + '</h3><p class="item-description">' + escapeHtml(item.description) + '</p>' + itemDetails +
-          '<p class="item-date">Time surrendered: ' + escapeHtml(item.date) + '</p>' + action + '</div></article>';
+          '<p class="item-date">' + escapeHtml(item.status === "found" || item.receivedAt ? "Time surrendered: " : "Reported: ") + escapeHtml(item.date) + '</p>' + action + '</div></article>';
       }).join("");
     }
 
     function updatePublicCounts() {
       document.getElementById("postedCount").textContent = items.filter(function (item) { return !item.archived; }).length;
       document.getElementById("unclaimedCount").textContent = items.filter(function (item) {
-        return item.status === "found" && !item.claimed && !item.archived;
+        return !item.claimed && !item.archived;
       }).length;
     }
 
     function restoreAdminItems() {
       try {
         const saved = JSON.parse(localStorage.getItem("findit-admin-items") || "null");
-        if (Array.isArray(saved)) items.splice.apply(items, [0, items.length].concat(saved));
+        if (Array.isArray(saved)) {
+          const currentItems = saved.filter(function (item) {
+            return item.id !== "LF-2026-0007" && item.id !== "LF-2026-0009";
+          });
+          items.splice.apply(items, [0, items.length].concat(currentItems));
+        }
       } catch (error) {
         showToast("Saved admin items couldn't be loaded.");
       }
@@ -905,6 +887,15 @@
       toast.classList.remove("hidden");
       window.clearTimeout(toastTimer);
       toastTimer = window.setTimeout(function () { toast.classList.add("hidden"); }, 4000);
+    }
+
+    function showNewPostNotification(item, saved) {
+      document.getElementById("newPostTitle").textContent = "New post: " + item.name;
+      document.getElementById("newPostCopy").textContent = "A new missing item is now on the dashboard.";
+      document.getElementById("newPostMeta").textContent = "Just posted · " + item.id;
+      showToast(saved
+        ? "New post: " + item.name
+        : "New post: " + item.name + " (available in this session only; it couldn't be saved).");
     }
 
     function openMessage(itemId) {
@@ -1193,22 +1184,21 @@
       const serial = items.reduce(function (highest, item) {
         const number = Number(String(item.id).slice(-4));
         return Number.isFinite(number) ? Math.max(highest, number) : highest;
-      }, 0) + 1;
+      }, 9) + 1; // Keep removed report IDs reserved.
       const receivedAt = form.elements.receivedAt.value;
-      const isFound = form.elements.type.value === "found";
       const item = {
         id: "LF-" + new Date().getFullYear() + "-" + String(serial).padStart(4, "0"),
         name: form.elements.title.value.trim(),
         description: form.elements.description.value.trim(),
         location: form.elements.location.value,
         date: new Date(receivedAt).toLocaleString(),
-        status: form.elements.type.value,
-        icon: isFound ? "📦" : "🔎",
+        receivedAt: receivedAt,
+        status: "missing",
+        icon: "🔎",
         art: "",
         foundBy: form.elements.foundBy.value.trim(),
         surrenderedTo: form.elements.surrenderedTo.value.trim(),
         contact: form.elements.contact.value.trim(),
-        claimDays: Number(document.getElementById("postingDuration").value),
         photos: photos.map(function (photo) { return photo.name; }),
         claimed: false,
         archived: false
@@ -1222,6 +1212,7 @@
       status.textContent = saved
         ? "Posted " + item.id + ". Its serial number was generated automatically."
         : "Item added for this session, but couldn't be saved in this browser.";
+      showNewPostNotification(item, saved);
     });
 
     document.getElementById("adminItemList").addEventListener("click", function (event) {
