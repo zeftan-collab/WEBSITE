@@ -494,7 +494,7 @@
             </div>
             <div class="filters" role="group" aria-label="Filter items by status">
               <button class="filter active" data-filter="all" type="button">All items</button>
-              <button class="filter" data-filter="found" type="button">Found</button>
+              <button class="filter" data-filter="claimed" type="button">Claimed</button>
               <button class="filter" data-filter="missing" type="button">Missing</button>
             </div>
             <div class="item-list" id="itemList" aria-live="polite"></div>
@@ -709,7 +709,8 @@
       const filtered = items.filter(function (item) {
         return !item.archived;
       }).filter(function (item) {
-        const matchesStatus = activeFilter === "all" || item.status === activeFilter;
+        const status = item.claimed ? "claimed" : item.status;
+        const matchesStatus = activeFilter === "all" || status === activeFilter;
         const haystack = [item.id, item.name, item.description, item.location, item.foundBy, item.surrenderedTo].join(" ").toLocaleLowerCase();
         return matchesStatus && haystack.includes(query);
       });
