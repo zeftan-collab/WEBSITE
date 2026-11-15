@@ -343,7 +343,7 @@
     .admin-form input[type="file"] { padding: 6px; }
     .admin-form textarea { min-height: 68px; resize: vertical; }
     .admin-form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-bottom: 8px; }
-    #foundDetailsFields > .admin-hint { margin: -4px 0 0; }
+    #itemDetailsFields > .admin-hint { margin: -4px 0 0; }
     .admin-items-panel { min-width: 0; }
     .admin-item-list, .admin-message-list { display: grid; gap: 9px; max-height: 690px; overflow-y: auto; }
     .admin-item-card, .admin-message-card { padding: 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
@@ -601,7 +601,7 @@
                   </select>
                 </label>
               </div>
-              <div id="foundDetailsFields">
+              <div id="itemDetailsFields">
                 <div class="admin-form-row">
                   <label>Surrendered by *
                     <input name="foundBy" required maxlength="70">
@@ -747,8 +747,8 @@
       }
 
       itemList.innerHTML = filtered.map(function (item) {
-        const foundDetails = item.status === "found"
-          ? '<p class="item-detail">Found/surrendered by: <strong>' + escapeHtml(item.foundBy) + '</strong></p><p class="item-detail">Surrendered to: <strong>' + escapeHtml(item.surrenderedTo) + '</strong></p>'
+        const itemDetails = item.foundBy || item.surrenderedTo
+          ? '<p class="item-detail">Surrendered by: <strong>' + escapeHtml(item.foundBy || "—") + '</strong></p><p class="item-detail">Surrendered to: <strong>' + escapeHtml(item.surrenderedTo || "—") + '</strong></p>'
           : "";
         const action = item.status === "found"
           ? '<p class="claim-time">◷ &nbsp;Claim within ' + item.claimDays + ' days</p><button class="primary-button claim-button" type="button" data-item-id="' + escapeHtml(item.id) + '">▱ &nbsp;Is this yours? Message Admin</button>'
@@ -756,8 +756,8 @@
         return '<article class="item-card">' +
           '<div class="item-art ' + escapeHtml(item.art) + '" aria-hidden="true">' + item.icon + '</div>' +
           '<div class="item-info"><div class="item-topline"><div class="item-meta"><span class="item-id">' + escapeHtml(item.id) + '</span><span>⌖ &nbsp;' + escapeHtml(item.status === "found" ? "Found at: " : "Location: ") + escapeHtml(item.location) + '</span></div><span class="status status-' + item.status + '">' + item.status.toUpperCase() + '</span></div>' +
-          '<h3 class="item-name">' + escapeHtml(item.name) + '</h3><p class="item-description">' + escapeHtml(item.description) + '</p>' + foundDetails +
-          '<p class="item-date">' + escapeHtml(item.status === "found" ? "Time surrendered: " : "Posted: ") + escapeHtml(item.date) + '</p>' + action + '</div></article>';
+          '<h3 class="item-name">' + escapeHtml(item.name) + '</h3><p class="item-description">' + escapeHtml(item.description) + '</p>' + itemDetails +
+          '<p class="item-date">Time surrendered: ' + escapeHtml(item.date) + '</p>' + action + '</div></article>';
       }).join("");
     }
 
@@ -818,8 +818,8 @@
       }
       list.innerHTML = activeItems.map(function (item) {
         const status = item.claimed ? "claimed" : item.status;
-        const details = item.status === "found"
-          ? '<p>Surrendered by ' + escapeHtml(item.foundBy || "—") + ' · Received by ' + escapeHtml(item.surrenderedTo || "—") + '</p><p>Admin contact: ' + escapeHtml(item.contact || "—") + '</p>'
+        const details = item.foundBy || item.surrenderedTo || item.contact
+          ? '<p>Surrendered by ' + escapeHtml(item.foundBy || "—") + ' · Surrendered to ' + escapeHtml(item.surrenderedTo || "—") + '</p><p>Surrenderer contact: ' + escapeHtml(item.contact || "—") + '</p>'
           : "";
         return '<article class="admin-item-card">' +
           '<div class="admin-item-thumb" aria-hidden="true">' + escapeHtml(item.icon || "📦") + '</div>' +
@@ -1172,13 +1172,6 @@
       }
     });
 
-    function updateFoundFieldsVisibility() {
-      const isFound = document.getElementById("adminItemForm").elements.type.value === "found";
-      const foundFields = document.getElementById("foundDetailsFields");
-      foundFields.classList.toggle("hidden", !isFound);
-      foundFields.querySelectorAll("input").forEach(function (input) { input.required = isFound; });
-    }
-
     function setDefaultReceivedTime() {
       const input = document.getElementById("adminItemForm").elements.receivedAt;
       const now = new Date();
@@ -1186,7 +1179,6 @@
       input.value = now.toISOString().slice(0, 16);
     }
 
-    document.getElementById("adminItemForm").elements.type.addEventListener("change", updateFoundFieldsVisibility);
     document.getElementById("adminItemForm").addEventListener("submit", function (event) {
       event.preventDefault();
       const form = event.currentTarget;
@@ -1209,13 +1201,13 @@
         name: form.elements.title.value.trim(),
         description: form.elements.description.value.trim(),
         location: form.elements.location.value,
-        date: isFound ? new Date(receivedAt).toLocaleString() : new Date().toLocaleString(),
+        date: new Date(receivedAt).toLocaleString(),
         status: form.elements.type.value,
         icon: isFound ? "📦" : "🔎",
         art: "",
-        foundBy: isFound ? form.elements.foundBy.value.trim() : "",
-        surrenderedTo: isFound ? form.elements.surrenderedTo.value.trim() : "",
-        contact: isFound ? form.elements.contact.value.trim() : "",
+        foundBy: form.elements.foundBy.value.trim(),
+        surrenderedTo: form.elements.surrenderedTo.value.trim(),
+        contact: form.elements.contact.value.trim(),
         claimDays: Number(document.getElementById("postingDuration").value),
         photos: photos.map(function (photo) { return photo.name; }),
         claimed: false,
@@ -1225,7 +1217,6 @@
       const saved = saveAdminItems();
       form.reset();
       setDefaultReceivedTime();
-      updateFoundFieldsVisibility();
       renderItems();
       renderAdminItems();
       status.textContent = saved
@@ -1370,7 +1361,6 @@
 
     restoreAdminItems();
     setDefaultReceivedTime();
-    updateFoundFieldsVisibility();
     updateUnreadCount();
     renderItems();
   </script>
