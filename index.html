@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#183779">
-  <title>FindIt — La Consolacion University Philippines</title>
+  <title>FinderSync — La Consolacion University Philippines</title>
   <style>
     :root {
       color-scheme: light;
@@ -466,7 +466,7 @@
         <button class="nav-link" id="adminMessagesLink" type="button"><span class="nav-icon">✉</span> Messages from Students <span class="nav-badge hidden" id="unreadBadge">0</span></button>
         <button class="nav-link" id="logoutLink" type="button"><span class="nav-icon">↪</span> Logout</button>
       </nav>
-      <div class="sidebar-note">FindIt · Campus lost &amp; found<br><span class="hidden" id="demoRoleLabel">Demo admin session</span></div>
+      <div class="sidebar-note">FinderSync · Campus lost &amp; found<br><span class="hidden" id="demoRoleLabel">Demo admin session</span></div>
     </aside>
 
     <main class="main">
@@ -514,7 +514,7 @@
                 <div class="notification-icon" aria-hidden="true">🔔</div>
                 <div>
                   <p class="notification-title">Items updated</p>
-                  <p class="notification-copy">A new item has been posted. Check the list in case it matches what you're looking for.</p>
+                  <p class="notification-copy">This notification will appear when a found item may match your missing-item report.</p>
                   <p class="notification-meta">Sample alert · Live notifications are not connected</p>
                 </div>
               </div>
@@ -680,7 +680,7 @@
   <div class="modal-backdrop hidden" id="messageModal" role="presentation">
     <section class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
       <div class="modal-header">
-        <div><h2 id="modalTitle">Message Admin</h2><p>Ask about this item or share details to start a claim.</p></div>
+        <div><h2 id="modalTitle">Message Admin</h2><p>Share your details or ask the admin about a lost or found item.</p></div>
         <button class="close-button" id="closeModal" type="button" aria-label="Close dialog">×</button>
       </div>
       <div class="notice hidden" id="demoSessionNotice"></div>
@@ -723,6 +723,7 @@
     let selectedItem = null;
     let demoUser = null;
     let pendingClaimItemId = null;
+    let pendingDirectMessage = false;
     let authPurpose = "student";
     let pendingAdminPage = "control";
     let authMode = "login";
@@ -910,6 +911,7 @@
       selectedItem = items.find(function (item) { return item.id === itemId; });
       if (!selectedItem) return;
       if (!demoUser) {
+        pendingDirectMessage = false;
         pendingClaimItemId = itemId;
         openAuthModal();
         return;
@@ -985,17 +987,21 @@
     function renderChatHistory() {
       const chatThread = document.getElementById("chatThread");
       chatThread.innerHTML = "";
-      const itemSummary = selectedItem.status === "found"
-        ? "A newly posted found item may match your missing-item report."
-        : "You asked about this missing item.";
-      addChatBubble("Item update", itemSummary + "\nItem: " + selectedItem.name + "\nSerial number: " + selectedItem.id + "\n" + (selectedItem.status === "found" ? "Found at: " : "Last known location: ") + selectedItem.location + "\nReview the item on the dashboard and message the admin if it may be yours.", "system");
+      if (selectedItem) {
+        const itemSummary = selectedItem.status === "found"
+          ? "A newly posted found item may match your missing-item report."
+          : "You asked about this missing item.";
+        addChatBubble("Item update", itemSummary + "\nItem: " + selectedItem.name + "\nSerial number: " + selectedItem.id + "\n" + (selectedItem.status === "found" ? "Found at: " : "Last known location: ") + selectedItem.location + "\nReview the item on the dashboard and message the admin if it may be yours.", "system");
+      } else {
+        addChatBubble("Message Admin", "You're starting a general inquiry with the admin. Share your contact details and describe how we can help.", "system");
+      }
       addChatBubble("LCUP ASSISTANT", "Hello! I am the LCUP Lost & Found Assistant. To help the admin confirm that the item is yours, please complete the ready-made template below and send it as one message:\n\n- Name\n- Elem. / HS / SHS / Coll\n- Contact No.\n- Email\n- About the item: what it looks like, any marks or contents, and where and when you lost it.", "assistant");
 
       try {
         const saved = JSON.parse(localStorage.getItem("findit-messages") || "[]");
         if (!Array.isArray(saved)) throw new Error("Saved messages are not a list.");
         saved.filter(function (message) {
-          return message.itemId === selectedItem.id && message.email === demoUser.email;
+          return message.itemId === (selectedItem ? selectedItem.id : "GENERAL") && message.email === demoUser.email;
         }).forEach(function (message) {
           addChatBubble("You", formatClaimDetails(message), "user");
           addChatBubble("LCUP ASSISTANT", "Thanks, " + message.name + ". Your details are saved in this prototype only; the admin has not been notified.", "assistant");
@@ -1020,6 +1026,7 @@
       authModal.classList.add("hidden");
       document.body.style.overflow = "";
       pendingClaimItemId = null;
+      pendingDirectMessage = false;
       pendingAdminPage = "control";
       authPurpose = "student";
     }
@@ -1076,6 +1083,7 @@
       const purpose = authPurpose;
       const adminPage = pendingAdminPage;
       authModal.classList.add("hidden");
+      document.body.style.overflow = "";
       authForm.reset();
       authPurpose = "student";
       setAuthMode("login");
@@ -1088,6 +1096,10 @@
         selectedItem = items.find(function (item) { return item.id === itemId; });
         if (selectedItem) showMessageModal();
         else document.body.style.overflow = "";
+      } else if (pendingDirectMessage) {
+        pendingDirectMessage = false;
+        selectedItem = null;
+        showMessageModal();
       } else {
         document.body.style.overflow = "";
         showToast("Demo session started. Your LCUP identity has not been verified.");
@@ -1126,7 +1138,7 @@
 
     messageForm.addEventListener("submit", function (event) {
       event.preventDefault();
-      if (!selectedItem || !messageForm.reportValidity()) return;
+      if (!messageForm.reportValidity()) return;
       const details = messageForm.elements.details.value.trim();
       const missingFields = missingTemplateFields(details);
       if (missingFields.length) {
@@ -1135,8 +1147,8 @@
         return;
       }
       const message = {
-        itemId: selectedItem.id,
-        itemName: selectedItem.name,
+        itemId: selectedItem ? selectedItem.id : "GENERAL",
+        itemName: selectedItem ? selectedItem.name : "General inquiry",
         name: demoUser.name,
         email: demoUser.email,
         details: details,
@@ -1327,8 +1339,14 @@
 
     document.getElementById("adminLink").addEventListener("click", function () {
       if (demoUser && demoUser.role === "admin") showToast("Use Messages from Students to review incoming messages.");
-      else if (demoUser) showToast("Choose an item and select its message button to contact the admin.");
-      else openAuthModal();
+      else if (demoUser) {
+        selectedItem = null;
+        showMessageModal();
+      } else {
+        pendingClaimItemId = null;
+        pendingDirectMessage = true;
+        openAuthModal();
+      }
     });
     document.getElementById("adminControlLink").addEventListener("click", function () { openAdminPage("control"); });
     document.getElementById("adminMessagesLink").addEventListener("click", function () { openAdminPage("messages"); });
