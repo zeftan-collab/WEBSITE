@@ -16,7 +16,7 @@
       --muted: #788397;
       --line: #e7ebf2;
       --surface: #fff;
-      --page: #f4f6fa;
+      --page: #fff;
       --green: #157650;
       --amber: #a76b07;
       --shadow: 0 5px 20px rgba(27, 46, 83, .055);
@@ -505,8 +505,11 @@
                     <option>MR Building</option>
                     <option>Library</option>
                     <option>Cafeteria</option>
-                    <option>Other campus location</option>
+                    <option value="other">Other (please specify)</option>
                   </select>
+                </label>
+                <label class="hidden" id="alertOtherLocationField">Specify location *
+                  <input name="otherLocation" id="alertOtherLocation" maxlength="100" placeholder="Enter the location">
                 </label>
                 <button class="primary-button full-button" type="submit">Save missing-item alert</button>
                 <p class="form-note" id="alertStatus" aria-live="polite"></p>
@@ -597,11 +600,11 @@
 
   <script>
     const items = [
-      { id: "LF-2026-0006", name: "Red water bottle", description: "Insulated bottle with a small star sticker", location: "MR Building", date: "Nov 13, 2026 · 02:15 PM", status: "missing", icon: "🧴", claimDays: 19, photoCount: 3 },
-      { id: "LF-2026-0005", name: "Canvas shoulder bag", description: "Beige tote with a blue notebook inside", location: "Library", date: "Nov 13, 2026 · 11:08 AM", status: "missing", icon: "👜", foundBy: "Campus staff", surrenderedTo: "Library desk", claimDays: 18 },
-      { id: "LF-2026-0004", name: "Set of keys", description: "Three silver keys with a round blue keychain", location: "Cafeteria", date: "Nov 12, 2026 · 01:42 PM", status: "missing", icon: "🔑", foundBy: "A student", surrenderedTo: "Student affairs", claimDays: 16 },
-      { id: "LF-2026-0003", name: "Blue notebook", description: "A5 ruled notebook, initials written inside cover", location: "SA Building", date: "Nov 11, 2026 · 10:20 AM", status: "missing", icon: "📘", claimDays: 14 },
-      { id: "LF-2026-0002", name: "Wireless earbuds", description: "White earbuds in a charging case", location: "MR Building", date: "Nov 10, 2026 · 04:06 PM", status: "missing", icon: "🎧", foundBy: "Security desk", surrenderedTo: "Guard station", claimDays: 12 }
+      { id: "LF-2026-0006", name: "BLK Blush", description: "Pink BLK blush compact", location: "MR Building", date: "Nov 13, 2026 · 02:15 PM", status: "missing", icon: "💄", photoSrc: "assets/blk-blush.png", foundBy: "Campus staff", surrenderedTo: "Admin 1", claimDays: 19 },
+      { id: "LF-2026-0005", name: "Kate Spade Shoulder Bag", description: "Black leather shoulder bag with a long strap", location: "Library", date: "Nov 13, 2026 · 11:08 AM", status: "missing", icon: "👜", photoSrc: "assets/kate-spade-shoulder-bag.png", foundBy: "Campus staff", surrenderedTo: "Admin 2", claimDays: 18 },
+      { id: "LF-2026-0004", name: "Black AquaFlask", description: "Black insulated bottle with a flip-top lid", location: "Cafeteria", date: "Nov 12, 2026 · 01:42 PM", status: "missing", icon: "🧴", photoSrc: "assets/black-aquaflask.png", foundBy: "A student", surrenderedTo: "Admin 3", claimDays: 16 },
+      { id: "LF-2026-0003", name: "HOTS Notebooks", description: "Three spiral HOTS notebooks in blue, green, and yellow", location: "SA Building", date: "Nov 11, 2026 · 10:20 AM", status: "missing", icon: "📒", photoSrcs: ["assets/hots-notebook-blue.png", "assets/hots-notebook-green.png", "assets/hots-notebook-yellow.png"], foundBy: "Campus staff", surrenderedTo: "Admin 4", claimDays: 14, photoCount: 3 },
+      { id: "LF-2026-0002", name: "Airpods Army Green", description: "Army green earbuds in a matching charging case", location: "MR Building", date: "Nov 10, 2026 · 04:06 PM", status: "missing", icon: "🎧", photoSrc: "assets/airpods-army-green.png", foundBy: "Security desk", surrenderedTo: "Admin 5", claimDays: 12 }
     ];
 
     const itemList = document.getElementById("itemList");
@@ -672,16 +675,18 @@
 
       itemList.innerHTML = filtered.map(function (item) {
         const status = item.claimed ? "claimed" : item.status;
-        const itemDetails = item.foundBy || item.surrenderedTo
-          ? '<p class="item-detail">Surrendered by: <strong>' + escapeHtml(item.foundBy || "—") + '</strong></p><p class="item-detail">Surrendered to: <strong>' + escapeHtml(item.surrenderedTo || "—") + '</strong></p>'
-          : "";
+        const itemDetails = '<p class="item-detail">Surrendered by: <strong>' + escapeHtml(item.foundBy || "Campus staff") + '</strong></p><p class="item-detail">Surrendered to: <strong>' + escapeHtml(item.surrenderedTo || "Admin") + '</strong></p>';
         const claimNotice = !item.claimed
           ? '<p class="claim-time">◷ &nbsp;Claim within ' + getClaimDays(item) + ' days</p>'
           : "";
         const action = '<button class="primary-button claim-button" type="button" data-item-id="' + escapeHtml(item.id) + '">▱ &nbsp;Is this yours? Message Admin</button>';
         const photoCount = item.photoCount === 3 ? 3 : 1;
         const photos = Array.from({ length: photoCount }, function (_, photoIndex) {
-          return '<img class="item-photo" src="' + createDemoPhoto(item, photoIndex) + '" alt="' + escapeHtml(item.name) + ' sample photo ' + (photoIndex + 1) + ' of ' + photoCount + '">';
+          const photoSource = item.photoSrcs ? item.photoSrcs[photoIndex] : item.photoSrc || createDemoPhoto(item, photoIndex);
+          const altText = item.photoSrc || item.photoSrcs
+            ? item.name + " photo " + (photoIndex + 1) + " of " + photoCount
+            : item.name + " sample photo " + (photoIndex + 1) + " of " + photoCount;
+          return '<img class="item-photo" src="' + escapeHtml(photoSource) + '" alt="' + escapeHtml(altText) + '">';
         }).join("");
         const galleryClass = photoCount === 1 ? "single-photo" : "multiple-photos";
         const gallery = '<div class="item-gallery ' + galleryClass + '" role="group" aria-label="' + photoCount + ' sample photos of ' + escapeHtml(item.name) + '">' + photos + '</div>';
@@ -698,20 +703,6 @@
       document.getElementById("unclaimedCount").textContent = items.filter(function (item) {
         return !item.claimed && !item.archived;
       }).length;
-    }
-
-    function restoreSavedItems() {
-      try {
-        const saved = JSON.parse(localStorage.getItem("findit-admin-items") || "null");
-        if (Array.isArray(saved)) {
-          const currentItems = saved.filter(function (item) {
-            return item.id !== "LF-2026-0007" && item.id !== "LF-2026-0009";
-          });
-          items.splice.apply(items, [0, items.length].concat(currentItems));
-        }
-      } catch (error) {
-        showToast("Saved item listings couldn't be loaded.");
-      }
     }
 
     function showStudentPage() {
@@ -993,7 +984,6 @@
       button.addEventListener("click", function () {
         activeFilter = button.dataset.filter;
         document.querySelectorAll(".filter").forEach(function (filter) { filter.classList.toggle("active", filter === button); });
-        restoreSavedItems();
         renderItems();
       });
     });
@@ -1066,14 +1056,28 @@
       }
     });
 
-    document.getElementById("alertForm").addEventListener("submit", function (event) {
+    const alertForm = document.getElementById("alertForm");
+    const alertLocation = alertForm.elements.location;
+    const alertOtherLocationField = document.getElementById("alertOtherLocationField");
+    const alertOtherLocation = document.getElementById("alertOtherLocation");
+    function updateAlertOtherLocation() {
+      const needsOtherLocation = alertLocation.value === "other";
+      alertOtherLocationField.classList.toggle("hidden", !needsOtherLocation);
+      alertOtherLocation.required = needsOtherLocation;
+      if (!needsOtherLocation) alertOtherLocation.value = "";
+    }
+    alertLocation.addEventListener("change", updateAlertOtherLocation);
+
+    alertForm.addEventListener("submit", function (event) {
       event.preventDefault();
       const form = event.currentTarget;
       if (!form.reportValidity()) return;
       const entry = {
         name: form.elements.name.value.trim(),
         details: form.elements.details.value.trim(),
-        location: form.elements.location.value,
+        location: form.elements.location.value === "other"
+          ? form.elements.otherLocation.value.trim()
+          : form.elements.location.value,
         createdAt: new Date().toISOString()
       };
       try {
@@ -1082,6 +1086,7 @@
         localStorage.setItem("findit-alerts", JSON.stringify(saved));
         showAlertNotification(entry);
         form.reset();
+        updateAlertOtherLocation();
         document.getElementById("alertStatus").textContent = "Alert saved. A centered prototype notification was shown; it was not sent.";
       } catch (error) {
         document.getElementById("alertStatus").textContent = "Could not save your alert in this browser. Please try again.";
