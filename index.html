@@ -84,7 +84,6 @@
       font-size: 13px;
       font-weight: 600;
     }
-    .nav-badge { display: grid; min-width: 18px; height: 18px; margin-left: auto; place-items: center; padding: 0 5px; border-radius: 9px; background: #d84545; color: #fff; font-size: 10px; font-weight: 800; }
     .nav-link:hover, .nav-link.active { background: rgba(255,255,255,.16); color: #fff; }
     .nav-icon { width: 18px; text-align: center; font-size: 16px; }
     .sidebar-note { margin: auto 17px 19px; color: rgba(255,255,255,.67); font-size: 11px; }
@@ -172,10 +171,7 @@
     .filter:hover, .filter.active { border-color: var(--navy); background: var(--navy); color: #fff; }
     .item-list { display: grid; gap: 13px; }
     .item-card {
-      display: grid;
-      grid-template-columns: 132px minmax(0, 1fr);
-      gap: 16px;
-      padding: 15px;
+      padding: 12px;
       border: 1px solid var(--line);
       border-radius: 12px;
       background: var(--surface);
@@ -183,20 +179,21 @@
       transition: transform .18s ease, box-shadow .18s ease;
     }
     .item-card:hover { transform: translateY(-2px); box-shadow: 0 9px 24px rgba(27,46,83,.09); }
-    .item-art {
-      display: grid;
-      min-height: 132px;
-      place-items: center;
+    .item-card .item-topline { margin-bottom: 10px; }
+    .item-gallery { display: grid; gap: 8px; margin-bottom: 8px; }
+    .item-gallery.single-photo { width: min(112px, 100%); grid-template-columns: 1fr; }
+    .item-gallery.multiple-photos { width: min(352px, 100%); grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .item-photo {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 112 / 155;
       overflow: hidden;
+      object-fit: cover;
       border: 1px solid #edf0f5;
       border-radius: 9px;
-      background: linear-gradient(145deg, #f8f9fd, #edf2fb);
-      font-size: 58px;
+      background: var(--page);
     }
-    .art-bag { background: linear-gradient(145deg, #fff5ea, #ffead8); }
-    .art-keys { background: linear-gradient(145deg, #f5f2ff, #e8e2ff); }
-    .art-bottle { background: linear-gradient(145deg, #eaf8f5, #d9f0e9); }
-    .art-book { background: linear-gradient(145deg, #fff8e9, #ffedc9); }
     .item-info { min-width: 0; }
     .item-topline { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 7px; }
     .item-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; color: #626f82; font-size: 11px; font-weight: 600; }
@@ -208,7 +205,7 @@
     .item-name { margin: 9px 0 2px; color: var(--navy); font-size: 15px; font-weight: 800; text-transform: capitalize; }
     .item-description { margin: 0 0 7px; color: #657185; font-size: 11px; }
     .item-detail { margin: 3px 0; color: #596579; font-size: 10px; }
-    .item-date { margin-top: 5px; color: #7a8494; font-size: 10px; }
+    .item-date { margin: 5px 0 0; color: #7a8494; font-size: 10px; }
     .claim-time { margin: 7px 0 8px; color: var(--amber); font-size: 10px; font-weight: 700; }
     .primary-button, .secondary-button {
       display: inline-flex;
@@ -226,6 +223,7 @@
       transition: background .15s ease;
     }
     .primary-button:hover { background: #234e9e; }
+    .primary-button:disabled { cursor: not-allowed; opacity: .6; }
     .secondary-button { border-color: var(--line); background: #fff; color: var(--navy); }
     .secondary-button:hover { background: #f2f5fb; }
     .empty-state { padding: 30px 16px; border: 1px dashed #cfd7e5; border-radius: 12px; background: #fff; color: var(--muted); text-align: center; }
@@ -234,6 +232,12 @@
     .right-column { display: grid; gap: 13px; }
     .panel { padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: var(--shadow); }
     .panel h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 9px; color: var(--navy); font-size: 14px; }
+    .prototype-banner { padding: 13px 14px; border: 1px solid #f1dfa3; border-radius: 11px; background: #fff3cc; color: #785b14; }
+    .prototype-banner-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 6px; }
+    .prototype-banner-title { display: flex; align-items: center; gap: 8px; margin: 0; color: #5f4508; font-size: 13px; font-weight: 800; }
+    .prototype-banner-icon { font-size: 16px; }
+    .prototype-banner-tag { flex: 0 0 auto; padding: 3px 8px; border-radius: 12px; background: #ffe2b0; color: #8a4014; font-size: 9px; font-weight: 800; }
+    .prototype-banner-copy { margin: 0; font-size: 11px; line-height: 1.5; }
     .notification-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-bottom: 9px; }
     .notification-header h2 { margin: 0; }
     .prototype-tag { padding: 3px 7px; border-radius: 10px; background: #eaf1ff; color: #2857a8; font-size: 8px; font-weight: 800; letter-spacing: .4px; }
@@ -272,6 +276,8 @@
       padding: 18px;
       background: rgba(13, 27, 54, .58);
     }
+    .alert-notification-backdrop { z-index: 7; }
+    .alert-notification-modal { width: min(440px, 100%); }
     .modal {
       width: min(460px, 100%);
       max-height: min(92vh, 760px);
@@ -322,46 +328,6 @@
     body.dark .chat-bubble.assistant { background: #293d5c; color: #d3e2ff; }
     body.dark .chat-details { color: var(--ink); }
     .modal-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 2px; }
-    .admin-hint { color: var(--muted); font-size: 10px; font-weight: 400; }
-    .admin-stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 14px; }
-    .admin-workspace { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: start; gap: 15px; }
-    .admin-workspace > .panel > h2, #adminMessagesPanel > h2 { margin: 0 0 5px; color: var(--navy); font-size: 14px; }
-    .admin-form { display: grid; gap: 9px; }
-    .admin-form label { display: grid; min-width: 0; gap: 4px; color: #39465a; font-size: 10px; font-weight: 700; }
-    .admin-form input, .admin-form select, .admin-form textarea {
-      width: 100%;
-      min-width: 0;
-      padding: 8px 9px;
-      border: 1px solid #dfe4ec;
-      border-radius: 6px;
-      background: #fff;
-      color: var(--ink);
-      font-size: 11px;
-    }
-    .admin-form input[type="file"] { padding: 6px; }
-    .admin-form textarea { min-height: 68px; resize: vertical; }
-    .admin-form-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 9px; margin-bottom: 8px; }
-    .admin-items-panel { min-width: 0; }
-    .admin-item-list, .admin-message-list { display: grid; gap: 9px; max-height: 690px; overflow-y: auto; }
-    .admin-item-card, .admin-message-card { padding: 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
-    .admin-item-card { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 9px; }
-    .admin-item-thumb { display: grid; width: 48px; height: 55px; place-items: center; border: 1px solid var(--line); border-radius: 6px; background: var(--page); font-size: 26px; }
-    .admin-item-content { min-width: 0; }
-    .admin-item-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 5px; }
-    .admin-item-card h3 { margin: 5px 0 2px; color: var(--navy); font-size: 12px; }
-    .admin-item-card p, .admin-message-card p { margin: 2px 0; color: var(--muted); font-size: 10px; overflow-wrap: anywhere; }
-    .admin-actions { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 7px; }
-    .small-button { min-height: 27px; padding: 0 8px; border: 0; border-radius: 5px; background: #21865a; color: #fff; font-size: 9px; font-weight: 750; }
-    .small-button:hover { background: #176f49; }
-    .small-button.archive { background: #68778b; }
-    .small-button.archive:hover { background: #4c596b; }
-    .small-button:disabled { cursor: default; opacity: .65; }
-    .admin-message-card.unread { border-left: 3px solid #e4a126; }
-    .admin-message-card h3 { margin: 0 0 5px; color: var(--navy); font-size: 12px; }
-    .admin-message-body { margin-top: 8px !important; padding: 9px; border-radius: 6px; background: var(--page); color: var(--ink) !important; white-space: pre-line; }
-    body.dark .admin-form label { color: var(--ink); }
-    body.dark .admin-form input, body.dark .admin-form select, body.dark .admin-form textarea { border-color: var(--line); background: var(--surface); color: var(--ink); }
-    body.dark .admin-message-body { background: #192434; }
     .toast {
       position: fixed;
       right: 22px;
@@ -395,9 +361,12 @@
     body.dark .message-form textarea, body.dark .modal { background-color: var(--surface); color: var(--ink); }
     body.dark .page-title, body.dark .item-name, body.dark .panel h2, body.dark .stat-number,
     body.dark .modal-header h2, body.dark .message-item strong { color: #b7ceff; }
-    body.dark .item-art { border-color: var(--line); background: #29364a; }
+    body.dark .item-photo { border-color: var(--line); }
     body.dark .message-item, body.dark .notice, body.dark .stat-icon { background: #2b3a52; color: #c4d2ec; }
     body.dark .prototype-tag { background: #2b3a52; color: #c4d2ec; }
+    body.dark .prototype-banner { border-color: #51482f; background: #302d24; color: #c4b987; }
+    body.dark .prototype-banner-title { color: #f2d48e; }
+    body.dark .prototype-banner-tag { background: #51482f; color: #f1d89c; }
     body.dark .notification-card { border-color: #51482f; background: #302d24; }
     body.dark .notification-icon { background: #51482f; }
     body.dark .notification-copy, body.dark .notification-meta { color: #c4b987; }
@@ -413,7 +382,6 @@
       .topbar { padding-right: 18px; padding-left: 18px; }
       .layout { grid-template-columns: minmax(0, 1fr); }
       .right-column { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-      .admin-workspace { grid-template-columns: minmax(0, 1fr); }
     }
     @media (max-width: 650px) {
       .sidebar { position: static; width: auto; min-height: 0; }
@@ -433,13 +401,8 @@
       .stat-icon { width: 32px; height: 32px; font-size: 14px; }
       .stat-number { font-size: 18px; }
       .stat-label { font-size: 8px; }
-      .item-card { grid-template-columns: 88px minmax(0, 1fr); gap: 11px; padding: 11px; }
-      .item-art { min-height: 100px; font-size: 42px; }
       .item-name { margin-top: 7px; font-size: 14px; }
       .right-column { grid-template-columns: minmax(0, 1fr); }
-      .admin-stats { gap: 6px; }
-      .admin-form-row { grid-template-columns: minmax(0, 1fr); gap: 7px; }
-      .admin-hint { flex-basis: 100%; text-align: center; }
       .nav-link { flex: 0 0 auto; }
       .nav { overflow-x: auto; }
     }
@@ -457,12 +420,10 @@
       </div>
       <nav class="nav">
         <button class="nav-link active" id="dashboardLink" type="button"><span class="nav-icon">▦</span> Student Dashboard</button>
-        <button class="nav-link" id="adminLink" type="button"><span class="nav-icon">▱</span> Message Admin</button>
-        <button class="nav-link" id="adminControlLink" type="button"><span class="nav-icon">⛨</span> Admin Control</button>
-        <button class="nav-link" id="adminMessagesLink" type="button"><span class="nav-icon">✉</span> Messages from Students <span class="nav-badge hidden" id="unreadBadge">0</span></button>
+        <button class="nav-link" id="messageAdminLink" type="button"><span class="nav-icon">▱</span> Message Admin</button>
         <button class="nav-link" id="logoutLink" type="button"><span class="nav-icon">↪</span> Logout</button>
       </nav>
-      <div class="sidebar-note">FinderSync · Campus lost &amp; found<br><span class="hidden" id="demoRoleLabel">Demo admin session</span></div>
+      <div class="sidebar-note">FinderSync · Campus lost &amp; found</div>
     </aside>
 
     <main class="main">
@@ -501,19 +462,12 @@
           </section>
 
           <aside class="right-column" aria-label="Help and item alerts">
-            <section class="panel" aria-labelledby="notificationTitle">
-              <div class="notification-header">
-                <h2 id="notificationTitle"><span aria-hidden="true">♧</span> Notifications</h2>
-                <span class="prototype-tag">PROTOTYPE</span>
+            <section class="prototype-banner" aria-labelledby="prototypeBannerTitle">
+              <div class="prototype-banner-header">
+                <h2 class="prototype-banner-title" id="prototypeBannerTitle"><span class="prototype-banner-icon" aria-hidden="true">⚗</span> PROTOTYPE VERSION</h2>
+                <span class="prototype-banner-tag">DEMO ONLY</span>
               </div>
-              <div class="notification-card" role="status">
-                <div class="notification-icon" aria-hidden="true">🔔</div>
-                <div>
-                  <p class="notification-title" id="newPostTitle">No new posts yet</p>
-                  <p class="notification-copy" id="newPostCopy">A notification will appear here when the admin posts an item.</p>
-                  <p class="notification-meta" id="newPostMeta">Prototype notification · This browser only</p>
-                </div>
-              </div>
+              <p class="prototype-banner-copy">This website is a prototype of the proposed Lost and Found Management System, developed for demonstration and evaluation purposes. Certain functionalities may not yet be available.</p>
             </section>
 
             <section class="panel">
@@ -528,7 +482,7 @@
 
             <section class="panel">
               <h2><span aria-hidden="true">♧</span> Get alerts for a missing item</h2>
-              <p class="panel-copy">Tell us what you lost. This prototype saves your alert on this device.</p>
+              <p class="panel-copy">Tell us what you lost. Submitting shows a centered sample notification.</p>
               <form class="alert-form" id="alertForm">
                 <label>Item name *
                   <input name="name" required maxlength="70" placeholder="e.g. Blue water bottle">
@@ -549,77 +503,12 @@
                 <button class="primary-button full-button" type="submit">Save missing-item alert</button>
                 <p class="form-note" id="alertStatus" aria-live="polite"></p>
               </form>
-              <div class="notice">Prototype mode: alerts are stored locally in this browser; no notifications are sent.</div>
+              <div class="notice">Prototype only: a centered popup previews the notification. No real notifications are sent.</div>
             </section>
           </aside>
         </div>
       </div>
 
-      <div class="content hidden" id="adminPage">
-        <section class="admin-stats" aria-label="Admin statistics">
-          <div class="stat"><div class="stat-icon">◇</div><div><strong class="stat-number" id="adminPostedCount">0</strong><span class="stat-label">Total items posted</span></div></div>
-          <div class="stat"><div class="stat-icon">▤</div><div><strong class="stat-number" id="adminUnclaimedCount">0</strong><span class="stat-label">Still unclaimed</span></div></div>
-          <div class="stat"><div class="stat-icon">✉</div><div><strong class="stat-number" id="adminUnreadCount">0</strong><span class="stat-label">Unread messages</span></div></div>
-        </section>
-
-        <div class="admin-workspace" id="adminWorkspace">
-          <section class="panel">
-            <h2>＋ Post New Item</h2>
-            <p class="panel-copy">Items posted here are automatically marked as missing and receive a serial number.</p>
-            <form class="admin-form" id="adminItemForm">
-              <label>Where found / last seen *
-                <select name="location" required>
-                  <option value="">Select location</option>
-                  <option>SA Building</option>
-                  <option>MR Building</option>
-                  <option>Library</option>
-                  <option>Cafeteria</option>
-                  <option>Main entrance</option>
-                  <option>Other campus location</option>
-                </select>
-              </label>
-              <div class="admin-form-row">
-                <label>Surrendered by *
-                  <input name="foundBy" required maxlength="70">
-                </label>
-                <label>Surrendered to *
-                  <input name="surrenderedTo" required maxlength="70">
-                </label>
-              </div>
-              <div class="admin-form-row">
-                <label>Time surrendered *
-                  <input name="receivedAt" type="datetime-local" required>
-                </label>
-                <label>Surrenderer contact *
-                  <input name="contact" type="tel" required maxlength="40">
-                </label>
-              </div>
-              <p class="admin-hint">Surrenderer contact is visible to admins only.</p>
-              <label>Item title *
-                <input name="title" required maxlength="80">
-              </label>
-              <label>Photos (up to 3)
-                <input name="photos" type="file" accept="image/*" multiple>
-              </label>
-              <label>Description *
-                <textarea name="description" required maxlength="400"></textarea>
-              </label>
-              <button class="primary-button" type="submit">Post item</button>
-              <p class="form-note" id="adminItemStatus" aria-live="polite"></p>
-            </form>
-          </section>
-          <section class="panel admin-items-panel">
-            <h2>◇ Posted Items (<span id="adminItemTotal">0</span>)</h2>
-            <div class="admin-item-list" id="adminItemList"></div>
-          </section>
-        </div>
-
-        <section class="panel hidden" id="adminMessagesPanel">
-          <h2>✉ Messages from Students</h2>
-          <p class="panel-copy">Messages submitted in this prototype are stored in this browser only.</p>
-          <div class="admin-message-list" id="adminMessageList"></div>
-        </section>
-      </div>
     </main>
   </div>
 
@@ -672,16 +561,38 @@
       </form>
     </section>
   </div>
+
+  <div class="modal-backdrop alert-notification-backdrop hidden" id="alertNotificationModal" role="presentation">
+    <section class="modal alert-notification-modal" role="dialog" aria-modal="true" aria-labelledby="alertNotificationTitle">
+      <div class="modal-header">
+        <div>
+          <h2 id="alertNotificationTitle">Your missing-item alert is ready</h2>
+          <p>Prototype preview only. No real notification was sent.</p>
+        </div>
+        <button class="close-button" id="closeAlertNotification" type="button" aria-label="Close notification">×</button>
+      </div>
+      <div class="notification-card" role="status">
+        <div class="notification-icon" aria-hidden="true">🔔</div>
+        <div>
+          <p class="notification-title" id="alertNotificationName"></p>
+          <p class="notification-copy" id="alertNotificationDetails"></p>
+          <p class="notification-meta" id="alertNotificationMeta">Prototype sample · No real notification sent</p>
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="primary-button" id="dismissAlertNotification" type="button">Got it</button>
+      </div>
+    </section>
+  </div>
   <div class="toast hidden" id="toast" role="status" aria-live="polite"></div>
 
   <script>
     const items = [
-      { id: "LF-2026-0006", name: "Red water bottle", description: "Insulated bottle with a small star sticker", location: "MR Building", date: "Nov 13, 2026 · 02:15 PM", status: "missing", icon: "🧴", art: "art-bottle" },
-      { id: "LF-2026-0005", name: "Canvas shoulder bag", description: "Beige tote with a blue notebook inside", location: "Library", date: "Nov 13, 2026 · 11:08 AM", status: "missing", icon: "👜", art: "art-bag", foundBy: "Campus staff", surrenderedTo: "Library desk", claimed: true },
-      { id: "LF-2026-0004", name: "Set of keys", description: "Three silver keys with a round blue keychain", location: "Cafeteria", date: "Nov 12, 2026 · 01:42 PM", status: "missing", icon: "🔑", art: "art-keys", foundBy: "A student", surrenderedTo: "Student affairs" },
-      { id: "LF-2026-0003", name: "Blue notebook", description: "A5 ruled notebook, initials written inside cover", location: "SA Building", date: "Nov 11, 2026 · 10:20 AM", status: "missing", icon: "📘", art: "art-book" },
-      { id: "LF-2026-0002", name: "Wireless earbuds", description: "White earbuds in a charging case", location: "MR Building", date: "Nov 10, 2026 · 04:06 PM", status: "missing", icon: "🎧", art: "", foundBy: "Security desk", surrenderedTo: "Guard station" },
-      { id: "LF-2026-0001", name: "Student ID card", description: "Found near the main entrance", location: "Main entrance", date: "Nov 09, 2026 · 08:55 AM", status: "missing", icon: "🪪", art: "", foundBy: "Campus staff", surrenderedTo: "Student affairs" }
+      { id: "LF-2026-0006", name: "Red water bottle", description: "Insulated bottle with a small star sticker", location: "MR Building", date: "Nov 13, 2026 · 02:15 PM", status: "missing", icon: "🧴", claimDays: 19, photoCount: 3 },
+      { id: "LF-2026-0005", name: "Canvas shoulder bag", description: "Beige tote with a blue notebook inside", location: "Library", date: "Nov 13, 2026 · 11:08 AM", status: "missing", icon: "👜", foundBy: "Campus staff", surrenderedTo: "Library desk", claimed: true, claimDays: 18 },
+      { id: "LF-2026-0004", name: "Set of keys", description: "Three silver keys with a round blue keychain", location: "Cafeteria", date: "Nov 12, 2026 · 01:42 PM", status: "missing", icon: "🔑", foundBy: "A student", surrenderedTo: "Student affairs", claimDays: 16 },
+      { id: "LF-2026-0003", name: "Blue notebook", description: "A5 ruled notebook, initials written inside cover", location: "SA Building", date: "Nov 11, 2026 · 10:20 AM", status: "missing", icon: "📘", claimDays: 14 },
+      { id: "LF-2026-0002", name: "Wireless earbuds", description: "White earbuds in a charging case", location: "MR Building", date: "Nov 10, 2026 · 04:06 PM", status: "missing", icon: "🎧", foundBy: "Security desk", surrenderedTo: "Guard station", claimDays: 12 }
     ];
 
     const itemList = document.getElementById("itemList");
@@ -689,19 +600,48 @@
     const resultsLabel = document.getElementById("resultsLabel");
     const modal = document.getElementById("messageModal");
     const authModal = document.getElementById("authModal");
+    const alertNotificationModal = document.getElementById("alertNotificationModal");
     const authForm = document.getElementById("authForm");
     const messageForm = document.getElementById("messageForm");
     const toast = document.getElementById("toast");
-    const ADMIN_DEMO_EMAIL = "adminproto@email.lcup.edu.ph";
     let activeFilter = "all";
     let selectedItem = null;
     let demoUser = null;
     let pendingClaimItemId = null;
     let pendingDirectMessage = false;
-    let authPurpose = "student";
-    let pendingAdminPage = "control";
     let authMode = "login";
     let toastTimer;
+    let messageBlockTimer = null;
+    const MESSAGE_SPAM_WINDOW_MS = 5 * 60 * 1000;
+    const MESSAGE_SPAM_LIMIT = 3;
+    const MESSAGE_SPAM_BLOCK_MS = 5 * 60 * 1000;
+
+    function createDemoPhoto(item, photoIndex) {
+      const palettes = [
+        ["#e8f1ff", "#d0e0fb", "#ffffff"],
+        ["#fff0ea", "#ffd8c7", "#ffffff"],
+        ["#e9f4ed", "#c8e3d2", "#ffffff"]
+      ];
+      const palette = palettes[photoIndex % palettes.length];
+      const iconSizes = [106, 94, 112];
+      const iconPositions = [151, 145, 158];
+      const svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 260">' +
+        '<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="' + palette[0] + '"/><stop offset="1" stop-color="' + palette[1] + '"/></linearGradient></defs>' +
+        '<rect width="360" height="260" fill="url(#bg)"/>' +
+        '<ellipse cx="180" cy="205" rx="104" ry="17" fill="#233756" opacity=".12"/>' +
+        '<rect x="22" y="18" width="316" height="224" rx="18" fill="' + palette[2] + '" opacity=".66"/>' +
+        '<text x="180" y="' + iconPositions[photoIndex] + '" text-anchor="middle" font-size="' + iconSizes[photoIndex] + '" font-family="Segoe UI Emoji, Apple Color Emoji, sans-serif">' + escapeHtml(item.icon || "📦") + '</text>' +
+        '<text x="180" y="222" text-anchor="middle" font-size="12" font-family="Segoe UI, sans-serif" font-weight="700" letter-spacing="2" fill="#52627a">SAMPLE PHOTO ' + (photoIndex + 1) + '</text>' +
+        '</svg>';
+      return "data:image/svg+xml;charset=UTF-8," + encodeURIComponent(svg);
+    }
+
+    function getClaimDays(item) {
+      const savedDays = Number(item.claimDays);
+      if (Number.isInteger(savedDays) && savedDays > 0 && savedDays < 20) return savedDays;
+      const itemNumber = Number(String(item.id).match(/\d+$/));
+      return (Number.isFinite(itemNumber) ? itemNumber : 0) % 19 + 1;
+    }
 
     function renderItems() {
       updatePublicCounts();
@@ -726,16 +666,21 @@
         const itemDetails = item.foundBy || item.surrenderedTo
           ? '<p class="item-detail">Surrendered by: <strong>' + escapeHtml(item.foundBy || "—") + '</strong></p><p class="item-detail">Surrendered to: <strong>' + escapeHtml(item.surrenderedTo || "—") + '</strong></p>'
           : "";
-        const action = item.claimed
-          ? ""
-          : item.status === "found"
-          ? '<p class="claim-time">◷ &nbsp;Claim within ' + item.claimDays + ' days</p><button class="primary-button claim-button" type="button" data-item-id="' + escapeHtml(item.id) + '">▱ &nbsp;Is this yours? Message Admin</button>'
-          : '<button class="secondary-button ask-button" type="button" data-item-id="' + escapeHtml(item.id) + '">Ask admin about this item</button>';
+        const claimNotice = !item.claimed
+          ? '<p class="claim-time">◷ &nbsp;Claim within ' + getClaimDays(item) + ' days</p>'
+          : "";
+        const action = '<button class="primary-button claim-button" type="button" data-item-id="' + escapeHtml(item.id) + '">▱ &nbsp;Is this yours? Message Admin</button>';
+        const photoCount = item.photoCount === 3 ? 3 : 1;
+        const photos = Array.from({ length: photoCount }, function (_, photoIndex) {
+          return '<img class="item-photo" src="' + createDemoPhoto(item, photoIndex) + '" alt="' + escapeHtml(item.name) + ' sample photo ' + (photoIndex + 1) + ' of ' + photoCount + '">';
+        }).join("");
+        const galleryClass = photoCount === 1 ? "single-photo" : "multiple-photos";
+        const gallery = '<div class="item-gallery ' + galleryClass + '" role="group" aria-label="' + photoCount + ' sample photos of ' + escapeHtml(item.name) + '">' + photos + '</div>';
+        const topline = '<div class="item-topline"><div class="item-meta"><span class="item-id">' + escapeHtml(item.id) + '</span><span>⌖ &nbsp;' + escapeHtml(item.status === "found" ? "Found at: " : "Location: ") + escapeHtml(item.location) + '</span></div><span class="status status-' + status + '">' + status.toUpperCase() + '</span></div>';
         return '<article class="item-card">' +
-          '<div class="item-art ' + escapeHtml(item.art) + '" aria-hidden="true">' + item.icon + '</div>' +
-          '<div class="item-info"><div class="item-topline"><div class="item-meta"><span class="item-id">' + escapeHtml(item.id) + '</span><span>⌖ &nbsp;' + escapeHtml(item.status === "found" ? "Found at: " : "Location: ") + escapeHtml(item.location) + '</span></div><span class="status status-' + status + '">' + status.toUpperCase() + '</span></div>' +
-          '<h3 class="item-name">' + escapeHtml(item.name) + '</h3><p class="item-description">' + escapeHtml(item.description) + '</p>' + itemDetails +
-          '<p class="item-date">' + escapeHtml(item.status === "found" || item.receivedAt ? "Time surrendered: " : "Reported: ") + escapeHtml(item.date) + '</p>' + action + '</div></article>';
+          topline + gallery +
+          '<div class="item-info"><h3 class="item-name">' + escapeHtml(item.name) + '</h3><p class="item-description">' + escapeHtml(item.description) + '</p>' + itemDetails +
+          '<p class="item-date">' + escapeHtml(item.status === "found" || item.receivedAt ? "Time surrendered: " : "Reported: ") + escapeHtml(item.date) + '</p>' + claimNotice + action + '</div></article>';
       }).join("");
     }
 
@@ -746,7 +691,7 @@
       }).length;
     }
 
-    function restoreAdminItems() {
+    function restoreSavedItems() {
       try {
         const saved = JSON.parse(localStorage.getItem("findit-admin-items") || "null");
         if (Array.isArray(saved)) {
@@ -756,125 +701,18 @@
           items.splice.apply(items, [0, items.length].concat(currentItems));
         }
       } catch (error) {
-        showToast("Saved admin items couldn't be loaded.");
+        showToast("Saved item listings couldn't be loaded.");
       }
-    }
-
-    function saveAdminItems() {
-      try {
-        localStorage.setItem("findit-admin-items", JSON.stringify(items));
-        return true;
-      } catch (error) {
-        showToast("Admin changes couldn't be saved in this browser.");
-        return false;
-      }
-    }
-
-    function getStoredMessages() {
-      const saved = JSON.parse(localStorage.getItem("findit-messages") || "[]");
-      if (!Array.isArray(saved)) throw new Error("Saved messages are not a list.");
-      return saved;
-    }
-
-    function updateUnreadCount() {
-      try {
-        const unread = getStoredMessages().filter(function (message) { return !message.read; }).length;
-        document.getElementById("adminUnreadCount").textContent = unread;
-        document.getElementById("unreadBadge").textContent = unread;
-        document.getElementById("unreadBadge").classList.toggle("hidden", unread === 0);
-      } catch (error) {
-        document.getElementById("adminUnreadCount").textContent = "!";
-        showToast("Student messages couldn't be read from this browser.");
-      }
-    }
-
-    function renderAdminItems() {
-      const activeItems = items.filter(function (item) { return !item.archived; });
-      const list = document.getElementById("adminItemList");
-      document.getElementById("adminItemTotal").textContent = activeItems.length;
-      document.getElementById("adminPostedCount").textContent = activeItems.length;
-      document.getElementById("adminUnclaimedCount").textContent = activeItems.filter(function (item) { return !item.claimed; }).length;
-      updateUnreadCount();
-      if (!activeItems.length) {
-        list.innerHTML = '<div class="empty-state"><strong>No posted items</strong>Post an item to see it here.</div>';
-        return;
-      }
-      list.innerHTML = activeItems.map(function (item) {
-        const status = item.claimed ? "claimed" : item.status;
-        const details = item.foundBy || item.surrenderedTo || item.contact
-          ? '<p>Surrendered by ' + escapeHtml(item.foundBy || "—") + ' · Surrendered to ' + escapeHtml(item.surrenderedTo || "—") + '</p><p>Surrenderer contact: ' + escapeHtml(item.contact || "—") + '</p>'
-          : "";
-        return '<article class="admin-item-card">' +
-          '<div class="admin-item-thumb" aria-hidden="true">' + escapeHtml(item.icon || "📦") + '</div>' +
-          '<div class="admin-item-content"><div class="admin-item-meta"><span class="item-id">' + escapeHtml(item.id) + '</span><span class="status status-' + status + '">' + status.toUpperCase() + '</span></div>' +
-          '<h3>' + escapeHtml(item.name) + '</h3><p>⌖ ' + escapeHtml(item.location) + ' · ' + escapeHtml(item.date) + '</p><p>' + escapeHtml(item.description) + '</p>' + details +
-          (item.photos && item.photos.length ? '<p>Photos: ' + escapeHtml(item.photos.join(", ")) + '</p>' : "") +
-          '<div class="admin-actions"><button class="small-button" type="button" data-admin-action="claim" data-item-id="' + escapeHtml(item.id) + '"' + (item.claimed ? " disabled" : "") + '>' + (item.claimed ? "Claimed" : "✓ Mark as Claimed") + '</button>' +
-          '<button class="small-button archive" type="button" data-admin-action="archive" data-item-id="' + escapeHtml(item.id) + '">▤ Archive</button></div></div></article>';
-      }).join("");
-    }
-
-    function renderAdminMessages() {
-      const list = document.getElementById("adminMessageList");
-      try {
-        const messages = getStoredMessages();
-        if (!messages.length) {
-          list.innerHTML = '<div class="empty-state"><strong>No student messages yet</strong>Submitted prototype messages will appear here.</div>';
-        } else {
-          list.innerHTML = messages.map(function (message, index) {
-            const timestamp = message.sentAt ? new Date(message.sentAt).toLocaleString() : "Time unavailable";
-            return '<article class="admin-message-card' + (message.read ? "" : " unread") + '">' +
-              '<h3>' + escapeHtml(message.itemId || "Student message") + ' · ' + escapeHtml(message.itemName || "Item inquiry") + '</h3>' +
-              '<p>From: ' + escapeHtml(message.name || "Student") + ' · ' + escapeHtml(message.email || message.contact || "No contact provided") + '</p>' +
-              '<p>Received: ' + escapeHtml(timestamp) + '</p>' +
-              '<p class="admin-message-body">' + escapeHtml(formatClaimDetails(message)) + '</p>' +
-              '<div class="admin-actions"><button class="small-button" type="button" data-message-index="' + index + '"' + (message.read ? " disabled" : "") + '>' + (message.read ? "Read" : "Mark as Read") + '</button></div></article>';
-          }).join("");
-        }
-        updateUnreadCount();
-      } catch (error) {
-        list.innerHTML = '<div class="empty-state"><strong>Messages unavailable</strong>Saved messages could not be read in this browser.</div>';
-      }
-    }
-
-    function showAdminPage(page) {
-      document.getElementById("studentPage").classList.add("hidden");
-      document.getElementById("adminPage").classList.remove("hidden");
-      document.getElementById("demoRoleLabel").classList.remove("hidden");
-      document.getElementById("pageTitle").textContent = "ADMIN CONTROL CENTER";
-      document.getElementById("pageSubtitle").textContent = "LA CONSOLACION UNIVERSITY PHILIPPINES · Lost & Found Management";
-      document.querySelector(".search").classList.add("hidden");
-      document.getElementById("adminWorkspace").classList.toggle("hidden", page === "messages");
-      document.getElementById("adminMessagesPanel").classList.toggle("hidden", page !== "messages");
-      document.getElementById("dashboardLink").classList.remove("active");
-      document.getElementById("adminLink").classList.remove("active");
-      document.getElementById("adminControlLink").classList.toggle("active", page === "control");
-      document.getElementById("adminMessagesLink").classList.toggle("active", page === "messages");
-      renderAdminItems();
-      if (page === "messages") renderAdminMessages();
-      window.scrollTo({ top: 0, behavior: "smooth" });
     }
 
     function showStudentPage() {
       document.getElementById("studentPage").classList.remove("hidden");
-      document.getElementById("adminPage").classList.add("hidden");
       document.getElementById("pageTitle").textContent = "LA CONSOLACION UNIVERSITY PHILIPPINES";
       document.getElementById("pageSubtitle").textContent = "Lost & Found System Portal";
       document.querySelector(".search").classList.remove("hidden");
       document.getElementById("dashboardLink").classList.add("active");
-      document.getElementById("adminLink").classList.remove("active");
-      document.getElementById("adminControlLink").classList.remove("active");
-      document.getElementById("adminMessagesLink").classList.remove("active");
+      document.getElementById("messageAdminLink").classList.remove("active");
       window.scrollTo({ top: 0, behavior: "smooth" });
-    }
-
-    function openAdminPage(page) {
-      if (demoUser && demoUser.role === "admin") {
-        showAdminPage(page);
-        return;
-      }
-      pendingAdminPage = page;
-      openAuthModal("admin");
     }
 
     function escapeHtml(value) {
@@ -890,13 +728,20 @@
       toastTimer = window.setTimeout(function () { toast.classList.add("hidden"); }, 4000);
     }
 
-    function showNewPostNotification(item, saved) {
-      document.getElementById("newPostTitle").textContent = "New post: " + item.name;
-      document.getElementById("newPostCopy").textContent = "A new missing item is now on the dashboard.";
-      document.getElementById("newPostMeta").textContent = "Just posted · " + item.id;
-      showToast(saved
-        ? "New post: " + item.name
-        : "New post: " + item.name + " (available in this session only; it couldn't be saved).");
+    function showAlertNotification(entry) {
+      document.getElementById("alertNotificationName").textContent = entry.name;
+      document.getElementById("alertNotificationDetails").textContent = entry.details + " · Last known location: " + entry.location + ".";
+      document.getElementById("alertNotificationMeta").textContent = "Prototype sample · " + new Date(entry.createdAt).toLocaleString() + " · No real notification sent";
+      alertNotificationModal.classList.remove("hidden");
+      document.body.style.overflow = "hidden";
+      document.getElementById("dismissAlertNotification").focus();
+    }
+
+    function closeAlertNotification() {
+      alertNotificationModal.classList.add("hidden");
+      if (authModal.classList.contains("hidden") && modal.classList.contains("hidden")) {
+        document.body.style.overflow = "";
+      }
     }
 
     function openMessage(itemId) {
@@ -921,8 +766,49 @@
       renderChatHistory();
       modal.classList.remove("hidden");
       document.body.style.overflow = "hidden";
+      updateMessageSendState();
       messageForm.elements.details.focus();
       messageForm.elements.details.setSelectionRange(messageForm.elements.details.value.length, messageForm.elements.details.value.length);
+    }
+
+    function updateMessageSendState(blockedUntil) {
+      if (messageBlockTimer) {
+        window.clearTimeout(messageBlockTimer);
+        messageBlockTimer = null;
+      }
+
+      const sendButton = messageForm.querySelector('button[type="submit"]');
+      const blockKey = "findit-message-block-until:" + demoUser.email;
+      let until;
+      try {
+        until = typeof blockedUntil === "number"
+          ? blockedUntil
+          : Number(localStorage.getItem(blockKey) || 0);
+      } catch (error) {
+        sendButton.disabled = true;
+        document.getElementById("messageStatus").textContent = "Spam protection couldn't be checked in this browser. Sending is disabled.";
+        return;
+      }
+      if (!Number.isFinite(until)) {
+        sendButton.disabled = true;
+        document.getElementById("messageStatus").textContent = "Spam protection data is invalid. Sending is disabled.";
+        return;
+      }
+      const remaining = until - Date.now();
+      sendButton.disabled = remaining > 0;
+
+      if (remaining > 0) {
+        document.getElementById("messageStatus").textContent = "Spam detected. Sending is blocked for 5 minutes until " + new Date(until).toLocaleTimeString() + ".";
+        messageBlockTimer = window.setTimeout(function () {
+          messageBlockTimer = null;
+          updateMessageSendState(0);
+          document.getElementById("messageStatus").textContent = "You can send messages again.";
+        }, remaining);
+      } else {
+        if (document.getElementById("messageStatus").textContent.indexOf("Spam detected.") === 0) {
+          document.getElementById("messageStatus").textContent = "";
+        }
+      }
     }
 
     function buildClaimTemplate(user) {
@@ -1003,8 +889,7 @@
       }
     }
 
-    function openAuthModal(purpose) {
-      authPurpose = purpose || "student";
+    function openAuthModal() {
       authForm.reset();
       document.getElementById("authStatus").textContent = "";
       document.getElementById("googleStatus").textContent = "Google sign-in is not connected in this prototype.";
@@ -1019,30 +904,22 @@
       document.body.style.overflow = "";
       pendingClaimItemId = null;
       pendingDirectMessage = false;
-      pendingAdminPage = "control";
-      authPurpose = "student";
     }
 
     function setAuthMode(mode) {
       authMode = mode;
       const creating = mode === "create";
-      const adminLogin = authPurpose === "admin";
       document.getElementById("loginTab").classList.toggle("active", !creating);
       document.getElementById("loginTab").setAttribute("aria-selected", String(!creating));
       document.getElementById("createAccountTab").classList.toggle("active", creating);
       document.getElementById("createAccountTab").setAttribute("aria-selected", String(creating));
-      document.querySelector(".auth-tabs").classList.toggle("hidden", adminLogin);
       document.getElementById("authNameField").classList.toggle("hidden", !creating);
       authForm.elements.name.required = creating;
-      if (!creating) authForm.elements.email.value = adminLogin ? ADMIN_DEMO_EMAIL : "userproto@email.lcup.edu.ph";
-      document.querySelector("#authModal .auth-lead").textContent = adminLogin
-        ? "Admin access is restricted to the demo administrator account in this prototype."
-        : "You can browse every item without an account. Sign in to message the admin and ask about an item.";
-      document.querySelector("#authModal .auth-note").textContent = adminLogin
-        ? "Demo admin login: " + ADMIN_DEMO_EMAIL + ". This prototype does not verify identities or enforce real admin permissions."
-        : "Demo login: userproto@email.lcup.edu.ph. Sign-in is simulated and does not verify identity. No password is needed or collected.";
-      document.getElementById("authTitle").textContent = creating ? "Create an account to message the admin" : (adminLogin ? "⇥ Sign in to Admin Control" : "⇥ Sign in to message the admin");
-      document.getElementById("authSubmit").textContent = creating ? "Create demo account" : (adminLogin ? "Enter Admin Demo" : "Continue in prototype");
+      if (!creating) authForm.elements.email.value = "userproto@email.lcup.edu.ph";
+      document.querySelector("#authModal .auth-lead").textContent = "You can browse every item without an account. Sign in to message the admin and ask about an item.";
+      document.querySelector("#authModal .auth-note").textContent = "Demo login: userproto@email.lcup.edu.ph. Sign-in is simulated and does not verify identity. No password is needed or collected.";
+      document.getElementById("authTitle").textContent = creating ? "Create an account to message the admin" : "⇥ Sign in to message the admin";
+      document.getElementById("authSubmit").textContent = creating ? "Create demo account" : "Continue in prototype";
       document.getElementById("authStatus").textContent = "";
     }
 
@@ -1050,18 +927,17 @@
       modal.classList.add("hidden");
       document.body.style.overflow = "";
       selectedItem = null;
+      if (messageBlockTimer) {
+        window.clearTimeout(messageBlockTimer);
+        messageBlockTimer = null;
+      }
     }
 
     authForm.addEventListener("submit", function (event) {
       event.preventDefault();
       if (!authForm.reportValidity()) return;
       const email = authForm.elements.email.value.trim().toLowerCase();
-      if (authPurpose === "admin" && email !== ADMIN_DEMO_EMAIL) {
-        document.getElementById("authStatus").textContent = "Use the demo admin email " + ADMIN_DEMO_EMAIL + ".";
-        authForm.elements.email.focus();
-        return;
-      }
-      if (authPurpose === "student" && (email === ADMIN_DEMO_EMAIL || (email !== "userproto@email.lcup.edu.ph" && !email.endsWith("@lcup.edu.ph")))) {
+      if (email !== "userproto@email.lcup.edu.ph" && !email.endsWith("@lcup.edu.ph")) {
         document.getElementById("authStatus").textContent = "Use an @lcup.edu.ph address or the demo email userproto@email.lcup.edu.ph.";
         authForm.elements.email.focus();
         return;
@@ -1069,20 +945,13 @@
       const emailName = email.split("@")[0].replace(/[._-]+/g, " ").replace(/\b\w/g, function (letter) { return letter.toUpperCase(); });
       demoUser = {
         email: email,
-        name: authPurpose === "admin" ? "Prototype Admin" : (authMode === "create" ? authForm.elements.name.value.trim() : emailName),
-        role: authPurpose
+        name: authMode === "create" ? authForm.elements.name.value.trim() : emailName
       };
-      const purpose = authPurpose;
-      const adminPage = pendingAdminPage;
       authModal.classList.add("hidden");
       document.body.style.overflow = "";
       authForm.reset();
-      authPurpose = "student";
       setAuthMode("login");
-      if (purpose === "admin") {
-        pendingAdminPage = "control";
-        showAdminPage(adminPage);
-      } else if (pendingClaimItemId) {
+      if (pendingClaimItemId) {
         const itemId = pendingClaimItemId;
         pendingClaimItemId = null;
         selectedItem = items.find(function (item) { return item.id === itemId; });
@@ -1115,6 +984,7 @@
       button.addEventListener("click", function () {
         activeFilter = button.dataset.filter;
         document.querySelectorAll(".filter").forEach(function (filter) { filter.classList.toggle("active", filter === button); });
+        restoreSavedItems();
         renderItems();
       });
     });
@@ -1124,32 +994,56 @@
     modal.addEventListener("click", function (event) { if (event.target === modal) closeMessage(); });
     document.addEventListener("keydown", function (event) {
       if (event.key !== "Escape") return;
-      if (!authModal.classList.contains("hidden")) closeAuthModal();
+      if (!alertNotificationModal.classList.contains("hidden")) closeAlertNotification();
+      else if (!authModal.classList.contains("hidden")) closeAuthModal();
       else if (!modal.classList.contains("hidden")) closeMessage();
+    });
+    document.getElementById("closeAlertNotification").addEventListener("click", closeAlertNotification);
+    document.getElementById("dismissAlertNotification").addEventListener("click", closeAlertNotification);
+    alertNotificationModal.addEventListener("click", function (event) {
+      if (event.target === alertNotificationModal) closeAlertNotification();
     });
 
     messageForm.addEventListener("submit", function (event) {
       event.preventDefault();
-      if (!messageForm.reportValidity()) return;
-      const details = messageForm.elements.details.value.trim();
-      const missingFields = missingTemplateFields(details);
-      if (missingFields.length) {
-        document.getElementById("messageStatus").textContent = "Please fill in the template lines for: " + missingFields.join(", ") + ".";
-        messageForm.elements.details.focus();
-        return;
-      }
-      const message = {
-        itemId: selectedItem ? selectedItem.id : "GENERAL",
-        itemName: selectedItem ? selectedItem.name : "General inquiry",
-        name: demoUser.name,
-        email: demoUser.email,
-        details: details,
-        template: true,
-        sentAt: new Date().toISOString()
-      };
       try {
+        const now = Date.now();
+        const blockKey = "findit-message-block-until:" + demoUser.email;
+        const existingBlock = Number(localStorage.getItem(blockKey) || 0);
+        if (existingBlock > now) {
+          updateMessageSendState(existingBlock);
+          return;
+        }
+        if (!messageForm.reportValidity()) return;
+        const details = messageForm.elements.details.value.trim();
+        const missingFields = missingTemplateFields(details);
+        if (missingFields.length) {
+          document.getElementById("messageStatus").textContent = "Please fill in the template lines for: " + missingFields.join(", ") + ".";
+          messageForm.elements.details.focus();
+          return;
+        }
         const saved = JSON.parse(localStorage.getItem("findit-messages") || "[]");
         if (!Array.isArray(saved)) throw new Error("Saved messages are not a list.");
+        const recentMessages = saved.filter(function (savedMessage) {
+          if (!savedMessage || savedMessage.email !== demoUser.email) return false;
+          const sentAt = Date.parse(savedMessage.sentAt);
+          return Number.isFinite(sentAt) && sentAt > now - MESSAGE_SPAM_WINDOW_MS && sentAt <= now;
+        });
+        if (recentMessages.length >= MESSAGE_SPAM_LIMIT - 1) {
+          const blockedUntil = now + MESSAGE_SPAM_BLOCK_MS;
+          localStorage.setItem(blockKey, String(blockedUntil));
+          updateMessageSendState(blockedUntil);
+          return;
+        }
+        const message = {
+          itemId: selectedItem ? selectedItem.id : "GENERAL",
+          itemName: selectedItem ? selectedItem.name : "General inquiry",
+          name: demoUser.name,
+          email: demoUser.email,
+          details: details,
+          template: true,
+          sentAt: new Date(now).toISOString()
+        };
         saved.push(message);
         localStorage.setItem("findit-messages", JSON.stringify(saved));
         addChatBubble("You", formatClaimDetails(message), "user");
@@ -1158,88 +1052,8 @@
         messageForm.elements.details.value = buildClaimTemplate(demoUser);
         messageForm.elements.details.focus();
         messageForm.elements.details.setSelectionRange(messageForm.elements.details.value.length, messageForm.elements.details.value.length);
-        updateUnreadCount();
       } catch (error) {
         document.getElementById("messageStatus").textContent = "Could not save your message in this browser. Please try again.";
-      }
-    });
-
-    function setDefaultReceivedTime() {
-      const input = document.getElementById("adminItemForm").elements.receivedAt;
-      const now = new Date();
-      now.setMinutes(now.getMinutes() - now.getTimezoneOffset());
-      input.value = now.toISOString().slice(0, 16);
-    }
-
-    document.getElementById("adminItemForm").addEventListener("submit", function (event) {
-      event.preventDefault();
-      const form = event.currentTarget;
-      const status = document.getElementById("adminItemStatus");
-      status.textContent = "";
-      if (!form.reportValidity()) return;
-      const photos = Array.from(form.elements.photos.files);
-      if (photos.length > 3) {
-        status.textContent = "Choose no more than 3 photos.";
-        return;
-      }
-      const serial = items.reduce(function (highest, item) {
-        const number = Number(String(item.id).slice(-4));
-        return Number.isFinite(number) ? Math.max(highest, number) : highest;
-      }, 9) + 1; // Keep removed report IDs reserved.
-      const receivedAt = form.elements.receivedAt.value;
-      const item = {
-        id: "LF-" + new Date().getFullYear() + "-" + String(serial).padStart(4, "0"),
-        name: form.elements.title.value.trim(),
-        description: form.elements.description.value.trim(),
-        location: form.elements.location.value,
-        date: new Date(receivedAt).toLocaleString(),
-        receivedAt: receivedAt,
-        status: "missing",
-        icon: "🔎",
-        art: "",
-        foundBy: form.elements.foundBy.value.trim(),
-        surrenderedTo: form.elements.surrenderedTo.value.trim(),
-        contact: form.elements.contact.value.trim(),
-        photos: photos.map(function (photo) { return photo.name; }),
-        claimed: false,
-        archived: false
-      };
-      items.unshift(item);
-      const saved = saveAdminItems();
-      form.reset();
-      setDefaultReceivedTime();
-      renderItems();
-      renderAdminItems();
-      status.textContent = saved
-        ? "Posted " + item.id + ". Its serial number was generated automatically."
-        : "Item added for this session, but couldn't be saved in this browser.";
-      showNewPostNotification(item, saved);
-    });
-
-    document.getElementById("adminItemList").addEventListener("click", function (event) {
-      const button = event.target.closest("[data-admin-action]");
-      if (!button) return;
-      const item = items.find(function (entry) { return entry.id === button.dataset.itemId; });
-      if (!item) return;
-      if (button.dataset.adminAction === "claim") item.claimed = true;
-      if (button.dataset.adminAction === "archive") item.archived = true;
-      saveAdminItems();
-      renderItems();
-      renderAdminItems();
-    });
-
-    document.getElementById("adminMessageList").addEventListener("click", function (event) {
-      const button = event.target.closest("[data-message-index]");
-      if (!button) return;
-      try {
-        const saved = getStoredMessages();
-        const message = saved[Number(button.dataset.messageIndex)];
-        if (!message) throw new Error("The selected message no longer exists.");
-        message.read = true;
-        localStorage.setItem("findit-messages", JSON.stringify(saved));
-        renderAdminMessages();
-      } catch (error) {
-        showToast("This message couldn't be marked as read.");
       }
     });
 
@@ -1257,8 +1071,9 @@
         const saved = JSON.parse(localStorage.getItem("findit-alerts") || "[]");
         saved.push(entry);
         localStorage.setItem("findit-alerts", JSON.stringify(saved));
+        showAlertNotification(entry);
         form.reset();
-        document.getElementById("alertStatus").textContent = "Your missing-item alert has been saved on this device.";
+        document.getElementById("alertStatus").textContent = "Alert saved. A centered prototype notification was shown; it was not sent.";
       } catch (error) {
         document.getElementById("alertStatus").textContent = "Could not save your alert in this browser. Please try again.";
       }
@@ -1320,9 +1135,8 @@
       showToast("Couldn't load your saved theme preference.");
     }
 
-    document.getElementById("adminLink").addEventListener("click", function () {
-      if (demoUser && demoUser.role === "admin") showToast("Use Messages from Students to review incoming messages.");
-      else if (demoUser) {
+    document.getElementById("messageAdminLink").addEventListener("click", function () {
+      if (demoUser) {
         selectedItem = null;
         showMessageModal();
       } else {
@@ -1331,13 +1145,9 @@
         openAuthModal();
       }
     });
-    document.getElementById("adminControlLink").addEventListener("click", function () { openAdminPage("control"); });
-    document.getElementById("adminMessagesLink").addEventListener("click", function () { openAdminPage("messages"); });
     document.getElementById("logoutLink").addEventListener("click", function () {
       if (demoUser) {
         demoUser = null;
-        document.getElementById("demoRoleLabel").classList.add("hidden");
-        showStudentPage();
         showToast("Signed out of this demo session.");
       } else {
         showToast("You're not signed in.");
@@ -1351,9 +1161,6 @@
       showStudentPage();
     });
 
-    restoreAdminItems();
-    setDefaultReceivedTime();
-    updateUnreadCount();
     renderItems();
   </script>
 </body>
