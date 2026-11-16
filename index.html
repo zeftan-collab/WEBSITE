@@ -93,19 +93,22 @@
       position: sticky;
       top: 0;
       z-index: 2;
-      display: flex;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      grid-template-areas: "prototype prototype" "heading actions";
       min-height: 76px;
       align-items: center;
-      justify-content: space-between;
-      gap: 20px;
+      gap: 10px 20px;
       padding: 12px 27px;
       border-bottom: 1px solid var(--line);
       background: rgba(255,255,255,.95);
       backdrop-filter: blur(12px);
     }
+    .topbar-prototype-banner { grid-area: prototype; padding: 8px 12px; }
+    .topbar-heading { grid-area: heading; min-width: 0; }
     .page-title { margin: 0; color: var(--navy); font-size: 18px; font-weight: 800; letter-spacing: -.35px; }
     .page-subtitle { margin: 1px 0 0; color: var(--muted); font-size: 11px; }
-    .top-actions { display: flex; align-items: center; gap: 10px; }
+    .top-actions { grid-area: actions; display: flex; align-items: center; gap: 10px; }
     .search {
       display: flex;
       width: min(340px, 36vw);
@@ -229,7 +232,7 @@
     .empty-state { padding: 30px 16px; border: 1px dashed #cfd7e5; border-radius: 12px; background: #fff; color: var(--muted); text-align: center; }
     .empty-state strong { display: block; margin-bottom: 4px; color: var(--ink); }
 
-    .right-column { display: grid; gap: 13px; }
+    .right-column, .help-column { display: grid; gap: 13px; }
     .panel { padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); box-shadow: var(--shadow); }
     .panel h2 { display: flex; align-items: center; gap: 8px; margin: 0 0 9px; color: var(--navy); font-size: 14px; }
     .prototype-banner { padding: 13px 14px; border: 1px solid #f1dfa3; border-radius: 11px; background: #fff3cc; color: #785b14; }
@@ -391,7 +394,7 @@
       .nav-link { min-height: 36px; padding: 0 10px; font-size: 11px; }
       .sidebar-note { display: none; }
       .main { margin-left: 0; }
-      .topbar { position: static; flex-wrap: wrap; gap: 10px; min-height: 0; padding: 12px 15px; }
+      .topbar { position: static; grid-template-areas: "prototype prototype" "heading heading" "actions actions"; gap: 10px; min-height: 0; padding: 12px 15px; }
       .page-title { font-size: 16px; }
       .top-actions { width: 100%; }
       .search { width: auto; flex: 1; }
@@ -401,6 +404,10 @@
       .stat-icon { width: 32px; height: 32px; font-size: 14px; }
       .stat-number { font-size: 18px; }
       .stat-label { font-size: 8px; }
+      .right-column { display: contents; }
+      .help-column { grid-row: 1; }
+      .browse-column { grid-row: 2; }
+      .alert-panel { grid-row: 3; }
       .item-name { margin-top: 7px; font-size: 14px; }
       .right-column { grid-template-columns: minmax(0, 1fr); }
       .nav-link { flex: 0 0 auto; }
@@ -428,9 +435,16 @@
 
     <main class="main">
       <header class="topbar">
-        <div>
+        <section class="prototype-banner topbar-prototype-banner" aria-labelledby="prototypeBannerTitle">
+          <div class="prototype-banner-header">
+            <h2 class="prototype-banner-title" id="prototypeBannerTitle"><span class="prototype-banner-icon" aria-hidden="true">⚗</span> PROTOTYPE VERSION</h2>
+            <span class="prototype-banner-tag">DEMO ONLY</span>
+          </div>
+          <p class="prototype-banner-copy">This website is a prototype of the proposed Lost and Found Management System, developed for demonstration and evaluation purposes. Certain functionalities may not yet be available.</p>
+        </section>
+        <div class="topbar-heading">
           <h1 class="page-title" id="pageTitle">LA CONSOLACION UNIVERSITY PHILIPPINES</h1>
-          <p class="page-subtitle" id="pageSubtitle">Lost &amp; Found System Portal</p>
+          <p class="page-subtitle" id="pageSubtitle">Lost &amp; Found System Prototype</p>
         </div>
         <div class="top-actions">
           <div class="search" role="search">
@@ -449,7 +463,7 @@
         </section>
 
         <div class="layout">
-          <section aria-labelledby="browseTitle">
+          <section class="browse-column" aria-labelledby="browseTitle">
             <div class="section-heading">
               <div><h2 id="browseTitle">Browse campus items</h2><p id="resultsLabel">Recently posted items</p></div>
             </div>
@@ -461,26 +475,20 @@
             <div class="item-list" id="itemList" aria-live="polite"></div>
           </section>
 
-          <aside class="right-column" aria-label="Help and item alerts">
-            <section class="prototype-banner" aria-labelledby="prototypeBannerTitle">
-              <div class="prototype-banner-header">
-                <h2 class="prototype-banner-title" id="prototypeBannerTitle"><span class="prototype-banner-icon" aria-hidden="true">⚗</span> PROTOTYPE VERSION</h2>
-                <span class="prototype-banner-tag">DEMO ONLY</span>
-              </div>
-              <p class="prototype-banner-copy">This website is a prototype of the proposed Lost and Found Management System, developed for demonstration and evaluation purposes. Certain functionalities may not yet be available.</p>
-            </section>
+          <div class="right-column">
+            <aside class="help-column" aria-label="Item claim information">
+              <section class="panel">
+                <h2><span aria-hidden="true">ⓘ</span> How to claim an item</h2>
+                <ol class="steps">
+                  <li>Find your item in the list and note its serial number.</li>
+                  <li>Click <strong>Is this yours?</strong> to message the admin.</li>
+                  <li>Share your details so the admin can verify ownership.</li>
+                  <li>Prototype messages stay on this device. Live admin replies require the connected system.</li>
+                </ol>
+              </section>
+            </aside>
 
-            <section class="panel">
-              <h2><span aria-hidden="true">ⓘ</span> How to claim an item</h2>
-              <ol class="steps">
-                <li>Find your item in the list and note its serial number.</li>
-                <li>Click <strong>Is this yours?</strong> to message the admin.</li>
-                <li>Share your details so the admin can verify ownership.</li>
-                <li>Prototype messages stay on this device. Live admin replies require the connected system.</li>
-              </ol>
-            </section>
-
-            <section class="panel">
+            <section class="panel alert-panel">
               <h2><span aria-hidden="true">♧</span> Get alerts for a missing item</h2>
               <p class="panel-copy">Tell us what you lost. Submitting shows a centered sample notification.</p>
               <form class="alert-form" id="alertForm">
@@ -505,7 +513,7 @@
               </form>
               <div class="notice">Prototype only: a centered popup previews the notification. No real notifications are sent.</div>
             </section>
-          </aside>
+          </div>
         </div>
       </div>
 
@@ -579,6 +587,7 @@
           <p class="notification-meta" id="alertNotificationMeta">Prototype sample · No real notification sent</p>
         </div>
       </div>
+      <p class="notice" role="note">This is a sample notification for demonstration purposes only. Actual notifications will only appear when an administrator posts an item related to one you have set an alert for.</p>
       <div class="modal-actions">
         <button class="primary-button" id="dismissAlertNotification" type="button">Got it</button>
       </div>
@@ -708,7 +717,7 @@
     function showStudentPage() {
       document.getElementById("studentPage").classList.remove("hidden");
       document.getElementById("pageTitle").textContent = "LA CONSOLACION UNIVERSITY PHILIPPINES";
-      document.getElementById("pageSubtitle").textContent = "Lost & Found System Portal";
+      document.getElementById("pageSubtitle").textContent = "Lost & Found System Prototype";
       document.querySelector(".search").classList.remove("hidden");
       document.getElementById("dashboardLink").classList.add("active");
       document.getElementById("messageAdminLink").classList.remove("active");
